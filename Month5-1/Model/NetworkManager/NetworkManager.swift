@@ -31,31 +31,4 @@ struct NetworkManager {
         }
         .resume()
     }
-    
-//    func fetchProducts(completion: @escaping (Result<[Product], Error>) -> Void
-//    ) {
-//        var request = URLRequest(url: Constants.urlPaths.productUrl)
-//        request.httpMethod = HTTPMethods.GET.rawValue
-//        session.dataTask(with: request)
-//        { data, response, error in
-//            if let error {
-//                completion(.failure(error))
-//            }
-//            guard let data else {
-//                return
-//            }
-//            let decoder = JSONDecoder()
-//            do {
-//                let data = try decoder.decode(
-//                    Products.self,
-//                    from: data)
-//                completion(
-//                    .success(
-//                        data.products))
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }
-//        .resume()
-//    }
 }

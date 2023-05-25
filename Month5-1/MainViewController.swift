@@ -82,19 +82,7 @@ class MainViewController: UIViewController {
         view.backgroundColor = .white
         setupSubviews()
         fetchProduct()
-        // fetch()
     }
-    
-    //    func fetch() -> () {
-    //        networkManager.fetchProducts { result in
-    //            switch result {
-    //            case .success(let data):
-    //                self.products = data
-    //            case .failure(let error):
-    //                print("\(error)")
-    //            }
-    //        }
-    //    }
     
     func fetchProduct() -> () {
         networkManager.fetchProducts { [weak self] result in
