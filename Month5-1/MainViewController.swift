@@ -81,17 +81,28 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupSubviews()
-        fetchProduct()
+        fetchProducts()
     }
     
-    func fetchProduct() -> () {
-        networkManager.fetchProducts { [weak self] result in
-            guard let self = self else { return }
-            self.products = result.products
-            DispatchQueue.main.async {
-                self.productTableView.reloadData()
+    func fetchProducts() -> () {
+        
+        Task {
+            do {
+                let response = try await networkManager.fetchProduct()
+                DispatchQueue.main.async {
+                    self.products = response.products
+                    self.productTableView.reloadData()
+                }
+            } catch {
+                showAlert(with: error)
             }
         }
+    }
+    
+    func showAlert(with massage: Error) {
+        let alert = UIAlertController(title: "OK", message: massage.localizedDescription, preferredStyle: .alert)
+        alert.addAction(.init(title: "Ok", style: .cancel))
+        present(alert, animated: true)
     }
     
     func setupSubviews() {
