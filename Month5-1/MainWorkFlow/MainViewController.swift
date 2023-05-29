@@ -3,7 +3,8 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
-    private let networkManager = NetworkManager()
+    private let viewModel = MainViewModel()
+    
     var categories: [Categories] = [.init(categoriesTitle: "Delivery"),
                                     .init(categoriesTitle: "Pick up"),
                                     .init(categoriesTitle: "Catering"),
@@ -88,7 +89,7 @@ class MainViewController: UIViewController {
         
         Task {
             do {
-                let response = try await networkManager.fetchProduct()
+                let response = try await viewModel.fetchProduct()
                 DispatchQueue.main.async {
                     self.products = response.products
                     self.productTableView.reloadData()
