@@ -21,6 +21,9 @@
 		3D399E632A12AB3500D9EB38 /* SubCategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D399E622A12AB3500D9EB38 /* SubCategoriesCollectionViewCell.swift */; };
 		3D399E652A1BAEEB00D9EB38 /* Extension + ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D399E642A1BAEEB00D9EB38 /* Extension + ImageView.swift */; };
 		3D9F1AEE2A23BDF100C9D284 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9F1AED2A23BDF100C9D284 /* MainViewModel.swift */; };
+		3DF2001F2A26638100A74808 /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF2001E2A26638100A74808 /* KeyChainManager.swift */; };
+		3DF200232A2669CC00A74808 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF200222A2669CC00A74808 /* AuthorizationViewController.swift */; };
+		3DF200262A271A3A00A74808 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF200252A271A3A00A74808 /* UserDefault.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		3D399E622A12AB3500D9EB38 /* SubCategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		3D399E642A1BAEEB00D9EB38 /* Extension + ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + ImageView.swift"; sourceTree = "<group>"; };
 		3D9F1AED2A23BDF100C9D284 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		3DF2001E2A26638100A74808 /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
+		3DF200222A2669CC00A74808 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
+		3DF200252A271A3A00A74808 /* UserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,10 +78,10 @@
 		3D399E3E2A0D2A8400D9EB38 /* Month5-1 */ = {
 			isa = PBXGroup;
 			children = (
+				3DF200212A26685E00A74808 /* AuthorizationWorkFlow */,
+				3DF200202A26638D00A74808 /* App */,
 				3D9F1AEB2A23BCF100C9D284 /* MainWorkFlow */,
 				3D399E5F2A0E9CF800D9EB38 /* Model */,
-				3D399E3F2A0D2A8400D9EB38 /* AppDelegate.swift */,
-				3D399E412A0D2A8400D9EB38 /* SceneDelegate.swift */,
 				3D9F1AEF2A23BFD600C9D284 /* Extensions */,
 				3D9F1AEA2A23BBC200C9D284 /* Resources */,
 			);
@@ -93,6 +99,8 @@
 		3D399E5F2A0E9CF800D9EB38 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3DF200242A271A2200A74808 /* UserDefaults */,
+				3DF2001D2A26631500A74808 /* KeyChain */,
 				3D399E592A0D38C800D9EB38 /* NetworkManager */,
 				3D399E572A0D387A00D9EB38 /* Model.swift */,
 				3D399E5D2A0E9CD900D9EB38 /* Enums.swift */,
@@ -136,6 +144,39 @@
 				3D399E642A1BAEEB00D9EB38 /* Extension + ImageView.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3DF2001D2A26631500A74808 /* KeyChain */ = {
+			isa = PBXGroup;
+			children = (
+				3DF2001E2A26638100A74808 /* KeyChainManager.swift */,
+			);
+			path = KeyChain;
+			sourceTree = "<group>";
+		};
+		3DF200202A26638D00A74808 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3D399E3F2A0D2A8400D9EB38 /* AppDelegate.swift */,
+				3D399E412A0D2A8400D9EB38 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		3DF200212A26685E00A74808 /* AuthorizationWorkFlow */ = {
+			isa = PBXGroup;
+			children = (
+				3DF200222A2669CC00A74808 /* AuthorizationViewController.swift */,
+			);
+			path = AuthorizationWorkFlow;
+			sourceTree = "<group>";
+		};
+		3DF200242A271A2200A74808 /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				3DF200252A271A3A00A74808 /* UserDefault.swift */,
+			);
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,15 +256,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D399E542A0D36D500D9EB38 /* CategoryCollectionViewCell.swift in Sources */,
+				3DF2001F2A26638100A74808 /* KeyChainManager.swift in Sources */,
 				3D399E612A0EB2C800D9EB38 /* ProductTableViewCell.swift in Sources */,
 				3D399E442A0D2A8400D9EB38 /* MainViewController.swift in Sources */,
 				3D399E562A0D384100D9EB38 /* NetworkManager.swift in Sources */,
+				3DF200232A2669CC00A74808 /* AuthorizationViewController.swift in Sources */,
 				3D399E582A0D387A00D9EB38 /* Model.swift in Sources */,
 				3D399E5E2A0E9CD900D9EB38 /* Enums.swift in Sources */,
 				3D399E652A1BAEEB00D9EB38 /* Extension + ImageView.swift in Sources */,
 				3D399E402A0D2A8400D9EB38 /* AppDelegate.swift in Sources */,
 				3D399E632A12AB3500D9EB38 /* SubCategoriesCollectionViewCell.swift in Sources */,
 				3D399E422A0D2A8400D9EB38 /* SceneDelegate.swift in Sources */,
+				3DF200262A271A3A00A74808 /* UserDefault.swift in Sources */,
 				3D9F1AEE2A23BDF100C9D284 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

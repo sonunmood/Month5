@@ -11,4 +11,9 @@ enum Constants {
         static let subCollectionViewId = "SubCategoriesCollectionViewCell"
         static let tableViewId = "ProductTableViewCell"
     }
+    
+    enum keyChain {
+        static let service = "Instagram"
+        static let account = "Login"
+    }
 }
