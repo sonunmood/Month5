@@ -25,15 +25,10 @@ class SplashViewController: UIViewController {
         } else {
             handleNotAuthorizedFlow()
         }
-            
     }
     
     private func handleNotAuthorizedFlow() {
         let vc = AuthorizationViewController()
-//        self.present(
-//            vc,
-//            animated: false
-//        )
         navigationController?.pushViewController(vc, animated: false)
     }
     
