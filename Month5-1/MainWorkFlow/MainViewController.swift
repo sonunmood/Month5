@@ -3,26 +3,6 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
-    private let viewModel = MainViewModel()
-    
-    var categories: [Categories] = [.init(categoriesTitle: "Delivery"),
-                                    .init(categoriesTitle: "Pick up"),
-                                    .init(categoriesTitle: "Catering"),
-                                    .init(categoriesTitle: "Carbside"),
-                                    .init(categoriesTitle: "Technics"),
-                                    .init(categoriesTitle: "Parfumes")]
-    var subCategories: [SubCategories] = [.init(subcategoriesImage: "takeaways",
-                                                subCategoriesTitle: "Takeaways"),
-                                          .init(subcategoriesImage: "grocery",
-                                                subCategoriesTitle: "Grocery"),
-                                          .init(subcategoriesImage: "pharmacy",
-                                                subCategoriesTitle: "Pharmacy"),
-                                          .init(subcategoriesImage: "convenience",
-                                                subCategoriesTitle: "Convenience"),
-                                          .init(subcategoriesImage: "takeaways",
-                                                subCategoriesTitle: "Takeaways")]
-    var products: [Product] = []
-    
     private lazy var categoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 4.0
@@ -52,7 +32,8 @@ class MainViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 88.0, height: 110.0)
         
-        let collectionView2 = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView2 = UICollectionView(
+            frame: .zero, collectionViewLayout: layout)
         collectionView2.register(SubCategoriesCollectionViewCell.self,
                                  forCellWithReuseIdentifier: Constants.reuseId.subCollectionViewId)
         collectionView2.contentInset = UIEdgeInsets(top: 0, left: 0,
@@ -78,6 +59,35 @@ class MainViewController: UIViewController {
         return tv
     }()
     
+    private let viewModel = MainViewModel()
+    
+    private let categories: [Categories] = [
+        .init(categoriesTitle: "Delivery"),
+        .init(categoriesTitle: "Pick up"),
+        .init(categoriesTitle: "Catering"),
+        .init(categoriesTitle: "Carbside"),
+        .init(categoriesTitle: "Technics"),
+        .init(categoriesTitle: "Parfumes")]
+    
+    private let subCategories: [SubCategories] = [
+        .init(
+            subcategoriesImage: "takeaways",
+            subCategoriesTitle: "Takeaways"),
+        .init(
+            subcategoriesImage: "grocery",
+            subCategoriesTitle: "Grocery"),
+        .init(
+            subcategoriesImage: "pharmacy",
+            subCategoriesTitle: "Pharmacy"),
+        .init(
+            subcategoriesImage: "convenience",
+            subCategoriesTitle: "Convenience"),
+        .init(
+            subcategoriesImage: "takeaways",
+            subCategoriesTitle: "Takeaways")]
+    
+    private var products: [Product] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -85,7 +95,17 @@ class MainViewController: UIViewController {
         fetchProducts()
     }
     
-    func fetchProducts() -> () {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
+   private func fetchProducts() {
         
         Task {
             do {
@@ -100,13 +120,13 @@ class MainViewController: UIViewController {
         }
     }
     
-    func showAlert(with massage: Error) {
+    private func showAlert(with massage: Error) {
         let alert = UIAlertController(title: "OK", message: massage.localizedDescription, preferredStyle: .alert)
         alert.addAction(.init(title: "Ok", style: .cancel))
         present(alert, animated: true)
     }
     
-    func setupSubviews() {
+    private func setupSubviews() {
         view.addSubview(categoryCollectionView)
         view.addSubview(searchBar)
         view.addSubview(subcategoryCollectionView)
@@ -143,8 +163,10 @@ class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDataSource,
                               UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         var count = 0
         if collectionView == categoryCollectionView {
             count = categories.count
@@ -154,16 +176,22 @@ extension MainViewController: UICollectionViewDataSource,
         return count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) ->
+                           UICollectionViewCell {
         
         var cell = UICollectionViewCell()
         
         if collectionView == categoryCollectionView {
-            let categoryCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseId.collectionViewId,for: indexPath) as! CategoryCollectionViewCell
+            let categoryCell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: Constants.reuseId.collectionViewId,
+                for: indexPath) as! CategoryCollectionViewCell
             categoryCell.initData(model: categories[indexPath.row])
             cell = categoryCell
         } else if collectionView == subcategoryCollectionView {
-            let subcategotyCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.reuseId.subCollectionViewId,for: indexPath) as! SubCategoriesCollectionViewCell
+            let subcategotyCell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: Constants.reuseId.subCollectionViewId,
+                for: indexPath) as! SubCategoriesCollectionViewCell
             subcategotyCell.initCell(model: subCategories[indexPath.row])
             cell = subcategotyCell
         }
@@ -171,15 +199,22 @@ extension MainViewController: UICollectionViewDataSource,
     }
 }
 
-extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
+extension MainViewController: UITableViewDataSource,
+                              UITableViewDelegate {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         products.count
     }
     
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseId.tableViewId, for: indexPath) as! ProductTableViewCell
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: Constants.reuseId.tableViewId,
+            for: indexPath) as! ProductTableViewCell
         cell.initCell(data: products[indexPath.row])
         return cell
     }

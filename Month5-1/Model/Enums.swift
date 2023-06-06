@@ -16,4 +16,8 @@ enum Constants {
         static let service = "Instagram"
         static let account = "Login"
     }
+    
+    enum Auth {
+        static let verificationID = "verificationID"
+    }
 }

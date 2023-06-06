@@ -1,10 +1,11 @@
 import UIKit
+import GoogleSignIn
 
 class AuthorizationViewController: UIViewController {
 
-    private let image: UIImageView = {
+    private let headerImage: UIImageView = {
         let mainImage = UIImageView()
-        mainImage.image = UIImage(named: "image")
+        mainImage.image = UIImage(named: "headerImage")
         return mainImage
     }()
     
@@ -15,23 +16,7 @@ class AuthorizationViewController: UIViewController {
         welcomeLbl.font = .boldSystemFont(ofSize: 28)
         return welcomeLbl
     }()
-    
-    private let infoLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = "Login to your account"
-        lbl.textColor = .white
-        lbl.font = .systemFont(ofSize: 20)
-        return lbl
-    }()
-    
-    private let loginLabel: UILabel = {
-        let loginLbl = UILabel()
-        loginLbl.text = "Login"
-        loginLbl.font = .systemFont(ofSize: 18)
-        loginLbl.textColor = .white
-        return loginLbl
-    }()
-    
+
     private var loginTextField: UITextField = {
         var loginTF = UITextField()
         loginTF.placeholder = "Login"
@@ -39,14 +24,6 @@ class AuthorizationViewController: UIViewController {
         loginTF.backgroundColor = .white
         loginTF.layer.borderWidth = 1
         return loginTF
-    }()
-    
-    private let passwordLabel: UILabel = {
-        let passwordLbl = UILabel()
-        passwordLbl.text = "Password"
-        passwordLbl.font = .systemFont(ofSize: 18)
-        passwordLbl.textColor = .white
-        return passwordLbl
     }()
     
     private let passwordTextField: UITextField = {
@@ -82,37 +59,19 @@ class AuthorizationViewController: UIViewController {
         return loginBtn
     }()
     
-    private let createNowButton: UIButton = {
-        let createNowBtn = UIButton()
-        createNowBtn.setTitle("Create Now", for: .normal)
-        createNowBtn.tintColor = .white
-        return createNowBtn
-    }()
-    
     private let accountLabel: UILabel = {
         let accountLbl = UILabel()
-        accountLbl.text = "Don't have account?"
+        accountLbl.text = "Sign in with:"
         accountLbl.textColor = .gray
         accountLbl.font = .systemFont(ofSize: 16)
         return accountLbl
     }()
     
-    private let googleImageView: UIImageView = {
-        let google = UIImageView()
-        google.image = UIImage(named: "google")
-        return google
-    }()
-    
-    private let facebookImageView: UIImageView = {
-        let facebook = UIImageView()
-        facebook.image = UIImage(named: "facebook")
-        return facebook
-    }()
-    
-    private let instagramImageView: UIImageView = {
-        let instagram = UIImageView()
-        instagram.image = UIImage(named: "instagram")
-        return instagram
+    private lazy var iconImages: BaseView = {
+        let view = BaseView()
+        view.backgroundColor = .clear
+        view.delegate = self
+        return view
     }()
     
     private var isSave = false {
@@ -128,6 +87,17 @@ class AuthorizationViewController: UIViewController {
         initUI()
         initAction()
         handleLoginField()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
     
     private func handleLoginField() {
@@ -142,59 +112,36 @@ class AuthorizationViewController: UIViewController {
     }
     
     func initUI() {
-        
+        view.addSubview(headerImage)
         view.addSubview(welcomLabel)
-        view.addSubview(infoLabel)
-        view.addSubview(image)
-        view.addSubview(loginLabel)
         view.addSubview(loginTextField)
-        view.addSubview(passwordLabel)
         view.addSubview(passwordTextField)
         view.addSubview(saveButton)
         view.addSubview(loginButton)
-        view.addSubview(createNowButton)
         view.addSubview(accountLabel)
-        view.addSubview(googleImageView)
-        view.addSubview(facebookImageView)
-        view.addSubview(instagramImageView)
         view.addSubview(eyeButton)
+        view.addSubview(iconImages)
         
-        
-        image.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(0)
-            make.leading.trailing.equalToSuperview().inset(0)
+        headerImage.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(200)
         }
         
         welcomLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(280)
-        }
-        
-        infoLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(welcomLabel)
-            make.top.equalTo(welcomLabel.snp.bottom).offset(4)
-        }
-        
-        loginLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(32)
-            make.top.equalTo(infoLabel.snp.bottom).offset(28)
+            make.top.equalTo(headerImage.snp.bottom).offset(80)
         }
         
         loginTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(28)
-            make.top.equalTo(loginLabel.snp.bottom).offset(8)
+            make.top.equalTo(welcomLabel.snp.bottom).offset(32)
             make.height.equalTo(48)
-        }
-        
-        passwordLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(28)
-            make.top.equalTo(loginTextField.snp.bottom).offset(8)
         }
         
         passwordTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(28)
-            make.top.equalTo(passwordLabel.snp.bottom).offset(8)
+            make.top.equalTo(loginTextField.snp.bottom).offset(32)
             make.height.equalTo(48)
         }
         
@@ -206,56 +153,39 @@ class AuthorizationViewController: UIViewController {
         }
         
         saveButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(4)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(8)
             make.trailing.equalTo(passwordTextField.snp.trailing)
+            make.height.equalTo(24)
+            make.width.equalTo(60)
         }
         
         loginButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-200)
+            make.top.equalTo(saveButton.snp.bottom).offset(8)
             make.height.equalTo(48)
             make.width.equalTo(280)
         }
         
-        createNowButton.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(4)
-            make.trailing.equalTo(loginButton.snp.trailing)
-        }
-        
         accountLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(createNowButton)
-            make.trailing.equalTo(createNowButton.snp.leading).offset(-4)
-        }
-        
-        facebookImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-80)
+            make.top.equalTo(loginButton.snp.bottom).offset(32)
         }
         
-        instagramImageView.snp.makeConstraints { make in
-            make.leading.equalTo(facebookImageView).offset(60)
-            make.bottom.equalToSuperview().offset(-80)
-        }
-        
-        googleImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(facebookImageView).offset(-60)
-            make.bottom.equalToSuperview().offset(-80)
+        iconImages.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(accountLabel.snp.bottom).offset(32)
+            make.height.equalTo(40)
+            make.width.equalTo(184)
         }
     }
     
     private func initAction() {
-        createNowButton.addTarget(self, action: #selector(tapAction), for: .touchUpInside)
+        
         loginButton.addTarget(self, action: #selector(authorizeTap), for: .touchUpInside)
         eyeButton.addTarget(self, action: #selector(tapEyeButton), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveLoginTap), for: .touchUpInside)
     }
-    
-    @objc
-    private func tapAction(sender: UIButton!) {
-        let vc = MainViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
+
     @objc
     private func authorizeTap(sender: UIButton) {
         guard
@@ -270,6 +200,8 @@ class AuthorizationViewController: UIViewController {
             service: Constants.keyChain.service,
             account: Constants.keyChain.account
         )
+        let vc = MainViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
@@ -282,3 +214,17 @@ class AuthorizationViewController: UIViewController {
         isSave.toggle()
     }
 }
+
+extension AuthorizationViewController: BaseViewDelegate {
+    func didTapGoogle() {
+//        GIDSignIn.sharedInstance.configuration?.prepareForInterfaceBuilder()
+//        GIDSignIn.sharedInstance.si
+    }
+    
+    func didTapPhone() {
+        let vc = PhoneVerifViewController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
+}
+
+
